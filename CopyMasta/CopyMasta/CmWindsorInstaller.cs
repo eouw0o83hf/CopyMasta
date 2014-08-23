@@ -25,6 +25,10 @@ namespace CopyMasta
             container.Register(Component.For<IKeystrokeManager>()
                                         .ImplementedBy<KeystrokeManager>()
                                         .LifestyleSingleton());
+
+            container.Register(Component.For<KeystrokeListenerBase>()
+                                        .ImplementedBy<KeystrokeLitener>()
+                                        .LifestyleSingleton());
         }
     }
 }

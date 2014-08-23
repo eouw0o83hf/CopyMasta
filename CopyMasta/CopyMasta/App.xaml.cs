@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Castle.Windsor;
+using CopyMasta.Core;
 
 namespace CopyMasta
 {
@@ -16,12 +17,15 @@ namespace CopyMasta
     {
         private readonly IWindsorContainer _container;
         private MainWindow _mainWindow;
+        private readonly KeystrokeListenerBase _listener;
 
         public App()
         {
             _container = new WindsorContainer();
             var installer = new CmWindsorInstaller();
             _container.Install(installer);
+            
+            _listener = _container.Resolve<KeystrokeListenerBase>();
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -34,6 +38,7 @@ namespace CopyMasta
         protected override void OnExit(ExitEventArgs e)
         {
             _container.Release(_mainWindow);
+            _container.Release(_listener);
             base.OnExit(e);
         }
     }

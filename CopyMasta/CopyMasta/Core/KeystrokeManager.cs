@@ -7,11 +7,7 @@ using CopyMasta.Core.Handler;
 
 namespace CopyMasta.Core
 {
-    public interface IKeystrokeManager
-    {
-    }
-
-    public class KeystrokeManager : IKeystrokeManager
+    public class KeystrokeManager
     {
         private readonly ICollection<IHandler> _handlers;
         private readonly KeystrokeListenerBase _listener;

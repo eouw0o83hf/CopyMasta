@@ -9,6 +9,7 @@ using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using CopyMasta.Core;
+using CopyMasta.Core.Handler;
 
 namespace CopyMasta
 {
@@ -22,8 +23,11 @@ namespace CopyMasta
                                       .BasedOn<Window>()
                                       .LifestyleTransient());
 
-            container.Register(Component.For<IKeystrokeManager>()
-                                        .ImplementedBy<KeystrokeManager>()
+            container.Register(Classes.FromThisAssembly()
+                                      .BasedOn<IHandler>()
+                                      .LifestyleSingleton());
+
+            container.Register(Component.For<KeystrokeManager>()
                                         .LifestyleSingleton());
 
             container.Register(Component.For<KeystrokeListenerBase>()

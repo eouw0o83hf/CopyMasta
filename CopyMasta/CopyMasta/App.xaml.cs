@@ -18,6 +18,7 @@ namespace CopyMasta
         private readonly IWindsorContainer _container;
         private MainWindow _mainWindow;
         private readonly KeystrokeListenerBase _listener;
+        private readonly KeystrokeManager _manager;
 
         public App()
         {
@@ -26,6 +27,7 @@ namespace CopyMasta
             _container.Install(installer);
             
             _listener = _container.Resolve<KeystrokeListenerBase>();
+            _manager = _container.Resolve<KeystrokeManager>();
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -38,6 +40,7 @@ namespace CopyMasta
         protected override void OnExit(ExitEventArgs e)
         {
             _container.Release(_mainWindow);
+            _container.Release(_manager);
             _container.Release(_listener);
             base.OnExit(e);
         }

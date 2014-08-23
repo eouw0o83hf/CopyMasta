@@ -12,19 +12,26 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CopyMasta.Core;
+using CopyMasta.Core.Handler;
 
 namespace CopyMasta
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IHandler
     {
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        
+        public void Handle(KeyState state)
+        {
+            lbl_AltPressed.Content = state.MetaKeys.HasFlag(MetaKeys.Alt).ToString();
+            lbl_ControlPressed.Content = state.MetaKeys.HasFlag(MetaKeys.Ctrl).ToString();
+            lbl_ShiftPressed.Content = state.MetaKeys.HasFlag(MetaKeys.Shift).ToString();
+        }
     }
 }

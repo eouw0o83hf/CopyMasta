@@ -71,6 +71,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CmWindsorInstaller.cs" />
+    <Compile Include="Core\Handler\IHandler.cs" />
+    <Compile Include="Core\IKeystrokeListener.cs" />
+    <Compile Include="Core\IKeystrokeManager.cs" />
+    <Compile Include="Core\KeyState.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

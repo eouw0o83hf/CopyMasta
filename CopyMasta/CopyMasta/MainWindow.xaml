@@ -1,0 +1,13 @@
+﻿<Window x:Class="CopyMasta.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525"
+        Visibility="Hidden">
+    <Grid>
+        <Label Content="Control Pressed?" HorizontalAlignment="Left" Margin="62,79,0,0" VerticalAlignment="Top"/>
+        <Label Content="Alt Pressed?" HorizontalAlignment="Left" Margin="62,164,0,0" VerticalAlignment="Top"/>
+        <Label Content="Shift Pressed?" HorizontalAlignment="Left" Margin="62,254,0,0" VerticalAlignment="Top"/>
+        <TextBlock x:Name="txtAltPressed" HorizontalAlignment="Left" Margin="180,164,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>

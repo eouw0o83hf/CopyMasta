@@ -33,8 +33,8 @@ namespace CopyMasta.Core
         private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
         
         private const int WhKeyboardLl = 13;
-        private const int WmKeydown = 0x0100;
-        private const int WmKeyup = 0x0101;
+        private static readonly IntPtr[] WmKeydowns = new [] { (IntPtr)0x0100, (IntPtr)0x0104 };
+        private static readonly IntPtr[] WmKeyups = new[] { (IntPtr)0x0101, (IntPtr)0x0105 };
         private readonly LowLevelKeyboardProc _proc;
         private readonly IntPtr _hookId;
 
@@ -126,8 +126,9 @@ namespace CopyMasta.Core
                     break;
             }
 
-            var isUp = (IntPtr)WmKeydown == wParam;
-            var isDown = (IntPtr)WmKeyup == wParam;
+            var isUp = WmKeyups.Contains(wParam);
+            var isDown = WmKeydowns.Contains(wParam);
+
             if (metaChange.HasValue)
             {
                 if (isUp && _state.MetaKeys.HasFlag(metaChange.Value))

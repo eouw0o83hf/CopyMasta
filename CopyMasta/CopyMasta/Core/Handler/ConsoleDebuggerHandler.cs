@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CopyMasta.Core.Handler
 {
-    public class ConsoleDebugger : IHandler
+    public class ConsoleDebuggerHandler : IHandler
     {
         public void Handle(KeyState state)
         {

@@ -33,5 +33,7 @@ namespace CopyMasta.Core.Handler
         public const int ChromeSafetyHelmet = 100;
 
         public const int BucketHandler = 1000;
+
+        public const int EmailGenerator = 1100;
     }
 }

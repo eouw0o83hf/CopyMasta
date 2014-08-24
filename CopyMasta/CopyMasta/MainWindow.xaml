@@ -6,9 +6,7 @@
         <Label Content="Control Pressed?" HorizontalAlignment="Left" Margin="62,79,0,0" VerticalAlignment="Top"/>
         <Label Content="Alt Pressed?" HorizontalAlignment="Left" Margin="62,164,0,0" VerticalAlignment="Top"/>
         <Label Content="Shift Pressed?" HorizontalAlignment="Left" Margin="62,254,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lbl_ControlPressed" Content="Label" HorizontalAlignment="Left" Margin="234,93,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lbl_AltPressed" Content="Label" HorizontalAlignment="Left" Margin="234,164,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lbl_ShiftPressed" Content="Label" HorizontalAlignment="Left" Margin="234,254,0,0" VerticalAlignment="Top"/>
+        <TextBlock x:Name="txtAltPressed" HorizontalAlignment="Left" Margin="180,164,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

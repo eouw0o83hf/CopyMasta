@@ -81,6 +81,7 @@ namespace CopyMasta.Core
                 return CallNextHookEx(_hookId, nCode, wParam, lParam);
             }
 
+            var previousState = _state.Clone();
             MetaKeys? metaChange = null;
             char? charChange = null;
 
@@ -150,7 +151,10 @@ namespace CopyMasta.Core
                 }
             }
 
-            FireChange(_state);
+            if (!previousState.Equals(_state))
+            {
+                FireChange(_state);
+            }
 
             return CallNextHookEx(_hookId, nCode, wParam, lParam);
         }

@@ -72,6 +72,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CmWindsorInstaller.cs" />
+    <Compile Include="Core\Handler\ConsoleDebugger.cs" />
     <Compile Include="Core\Handler\IHandler.cs" />
     <Compile Include="Core\IKeystrokeListener.cs" />
     <Compile Include="Core\KeystrokeManager.cs" />

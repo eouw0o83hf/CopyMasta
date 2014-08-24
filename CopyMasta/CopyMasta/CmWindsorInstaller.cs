@@ -21,10 +21,14 @@ namespace CopyMasta
 
             container.Register(Classes.FromThisAssembly()
                                       .BasedOn<Window>()
+                                      //.WithServiceBase()
+                                      .WithServiceAllInterfaces()
+                                      .WithServiceSelf()
                                       .LifestyleTransient());
 
             container.Register(Classes.FromThisAssembly()
                                       .BasedOn<IHandler>()
+                                      .WithServiceBase()
                                       .LifestyleSingleton());
 
             container.Register(Component.For<KeystrokeManager>()

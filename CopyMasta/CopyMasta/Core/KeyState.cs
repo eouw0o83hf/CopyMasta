@@ -10,6 +10,26 @@ namespace CopyMasta.Core
     {
         public MetaKeys MetaKeys { get; set; }
         public List<char> Keys { get; set; }
+        
+        public KeyState Clone()
+        {
+            return new KeyState
+                {
+                    MetaKeys = MetaKeys,
+                    Keys = Keys.ToList()
+                };
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !(obj is KeyState))
+            {
+                return false;
+            }
+
+            var keys = (KeyState)obj;
+            return keys.MetaKeys == MetaKeys && keys.Keys.OrderBy(a => a).SequenceEqual(Keys.OrderBy(a => a));
+        }
     }
 
     [Flags]

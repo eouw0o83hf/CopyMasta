@@ -30,6 +30,8 @@ namespace CopyMasta.Core.Handler
     {
         public const int ConsoleDebugger = 0;
 
+        public const int ChromeSafetyHelmet = 100;
+
         public const int BucketHandler = 1000;
     }
 }

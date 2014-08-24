@@ -8,6 +8,30 @@ namespace CopyMasta.Core.Handler
 {
     public interface IHandler
     {
-        void Handle(KeyState state);
+        int AbsoluteExecutionOrder { get; }
+
+        /// <summary>
+        /// Handle a state change.
+        /// </summary>
+        /// <param name="state">New state</param>
+        /// <returns>How to allow the event to return</returns>
+        EventContinuation Handle(KeyState state);
+    }
+
+    public enum EventContinuation
+    {
+        Continue,
+        InternalOnly,
+        ExternalOnly,
+        Abort
+    }
+
+    public static class ExecutionOrders
+    {
+        public const int ConsoleDebugger = 0;
+
+        public const int ChromeSafetyHelmet = 100;
+
+        public const int BucketHandler = 1000;
     }
 }

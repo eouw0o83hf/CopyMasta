@@ -73,9 +73,10 @@
     </Compile>
     <Compile Include="CmWindsorInstaller.cs" />
     <Compile Include="Core\Handler\BucketHandler.cs" />
+    <Compile Include="Core\Handler\ChromeSafetyHelmet.cs" />
     <Compile Include="Core\Handler\ConsoleDebuggerHandler.cs" />
     <Compile Include="Core\Handler\IHandler.cs" />
-    <Compile Include="Core\IKeystrokeListener.cs" />
+    <Compile Include="Core\KeystrokeListener.cs" />
     <Compile Include="Core\KeystrokeManager.cs" />
     <Compile Include="Core\KeyState.cs" />
     <Compile Include="MainWindow.xaml.cs">

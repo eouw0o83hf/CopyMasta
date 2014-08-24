@@ -16,16 +16,44 @@ namespace CopyMasta.Core
         {
             _handlers = handlers;
             _listener = listener;
-
-            _listener.OnStateChange += StateChanged;
+            _listener.RegisterListener(StateChanged);
         }
 
-        private void StateChanged(KeyState state)
+        private bool StateChanged(KeyState state)
         {
-            foreach (var h in _handlers)
+            var continueInternal = true;
+            var continueExternal = true;
+            foreach (var h in _handlers.OrderBy(a => a.AbsoluteExecutionOrder))
             {
-                h.Handle(state);
+                var status = h.Handle(state);
+
+                switch (status)
+                {
+                    case EventContinuation.Abort:
+                        continueInternal = false;
+                        continueExternal = false;
+                        break;
+
+                    case EventContinuation.ExternalOnly:
+                        continueInternal = false;
+                        break;
+
+                    case EventContinuation.InternalOnly:
+                        continueExternal = false;
+                        break;
+
+                    case EventContinuation.Continue:
+                    default:
+                        break;
+                }
+
+                if (!continueInternal)
+                {
+                    break;
+                }
             }
+
+            return continueExternal;
         }
     }
 }

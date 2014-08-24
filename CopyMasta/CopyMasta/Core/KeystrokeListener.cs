@@ -11,24 +11,16 @@ namespace CopyMasta.Core
 {
     public abstract class KeystrokeListenerBase : IDisposable
     {
-        public delegate void StateChanged(KeyState state);
-
-        public event StateChanged OnStateChange;
-
-        protected void FireChange(KeyState state)
-        {
-            if (OnStateChange != null)
-            {
-                OnStateChange(state);
-            }
-        }
-
+        public abstract void RegisterListener(Func<KeyState, bool> listener);
         public abstract void Dispose();
     }
 
     public class KeystrokeLitener : KeystrokeListenerBase
     {
         private readonly KeyState _state;
+        private readonly List<Func<KeyState, bool>> _listeners = new List<Func<KeyState, bool>>();
+
+        #region Low-Level Communication
 
         private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
         
@@ -51,6 +43,8 @@ namespace CopyMasta.Core
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr GetModuleHandle(string lpModuleName);
 
+        #endregion
+
         public KeystrokeLitener()
         {
             _hookId = IntPtr.Zero;
@@ -64,6 +58,8 @@ namespace CopyMasta.Core
 
             _hookId = SetHook(_proc);
         }
+
+        #region WinAPI Interface
 
         private static IntPtr SetHook(LowLevelKeyboardProc proc)
         {
@@ -152,17 +148,36 @@ namespace CopyMasta.Core
                 }
             }
 
+            var shouldContinue = true;
             if (!previousState.Equals(_state))
             {
-                FireChange(_state);
+                foreach (var listener in _listeners)
+                {
+                    shouldContinue &= listener(_state);
+                }
             }
 
-            return CallNextHookEx(_hookId, nCode, wParam, lParam);
+            if (shouldContinue)
+            {
+                return CallNextHookEx(_hookId, nCode, wParam, lParam);
+            }
+            return (IntPtr) 1;
+        }
+
+        #endregion
+
+        #region Base Class Implementation
+
+        public override void RegisterListener(Func<KeyState, bool> listener)
+        {
+            _listeners.Add(listener);
         }
 
         public override void Dispose()
         {
             UnhookWindowsHookEx(_hookId);
         }
+
+        #endregion
     }
 }

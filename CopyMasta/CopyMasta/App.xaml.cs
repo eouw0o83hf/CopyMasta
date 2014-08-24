@@ -33,7 +33,6 @@ namespace CopyMasta
         protected override void OnStartup(StartupEventArgs e)
         {
             _mainWindow = _container.Resolve<MainWindow>();
-            _mainWindow.ShowDialog();
             base.OnStartup(e);
         }
 

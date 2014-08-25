@@ -22,32 +22,38 @@ namespace CopyMasta.Core.Handler
                 return EventContinuation.Continue;
             }
 
-            var moveToClipboard = false;
+            bool moveToClipboard;
 
+            // E: New entry
             if (state.Keys.Contains('E') && state.MetaKeys.HasFlag(MetaKeys.Shift))
             {
                 _guids.Add(Guid.NewGuid());
                 _position = _guids.Count - 1;
                 moveToClipboard = true;
             }
+            // W: Load currently-pointed entry
             else if (state.Keys.Contains('W') && _guids.Any())
             {
+                // If !shift, move the pointer to the last position before loading
                 if (!state.MetaKeys.HasFlag(MetaKeys.Shift))
                 {
                     _position = _guids.Count - 1;
                 }
                 moveToClipboard = state.MetaKeys.HasFlag(MetaKeys.Shift);
             }
+            // Q: Previous position
             else if (state.Keys.Contains('Q') && _position > 0)
             {
                 _position--;
                 moveToClipboard = state.MetaKeys.HasFlag(MetaKeys.Shift);
             }
+            // R: Next position
             else if (state.Keys.Contains('R') && _position < (_guids.Count - 1))
             {
                 _position++;
                 moveToClipboard = state.MetaKeys.HasFlag(MetaKeys.Shift);
             }
+            // Otherwise, nothing to do here /jetpack
             else
             {
                 return EventContinuation.Continue;
@@ -56,10 +62,9 @@ namespace CopyMasta.Core.Handler
             if (moveToClipboard)
             {
                 Clipboard.SetText(string.Format("testemail+{0}@testdomain.local", _guids[_position]));
-                return EventContinuation.InternalOnly;
             }
 
-            return EventContinuation.Continue;
+            return EventContinuation.InternalOnly;
         }
     }
 }

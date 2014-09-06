@@ -17,7 +17,7 @@ namespace CopyMasta.Core.Handler
                 && !state.MetaKeys.HasFlag(MetaKeys.Alt)
                 && state.Keys.Intersect(new [] { 'Q', 'W' }).Any())
             {
-                return EventContinuation.InternalOnly;
+                return EventContinuation.Abort;
             }
 
             return EventContinuation.Continue;

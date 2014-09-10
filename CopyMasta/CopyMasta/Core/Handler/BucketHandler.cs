@@ -31,12 +31,11 @@ namespace CopyMasta.Core.Handler
                 if (!state.MetaKeys.HasFlag(MetaKeys.Shift))
                 {
                     _buckets[state.Keys[0]] = Clipboard.GetText();
-                    return EventContinuation.Abort;
                 }
-                else if (_buckets.ContainsKey(state.Keys[0]))
+                
+                if (_buckets.ContainsKey(state.Keys[0]))
                 {
                     Clipboard.SetText(_buckets[state.Keys[0]]);
-                    return EventContinuation.Abort;
                 }
             }
 

@@ -64,7 +64,7 @@ namespace CopyMasta.Core.Handler
                 Clipboard.SetText(string.Format("testemail+{0}@testdomain.local", _guids[_position]));
             }
 
-            return EventContinuation.InternalOnly;
+            return EventContinuation.Continue;
         }
     }
 }

@@ -10,13 +10,19 @@ namespace CopyMasta.Core.Handler
     {
         public int AbsoluteExecutionOrder { get { return ExecutionOrders.ConsoleDebugger; } }
 
+        private static readonly IDictionary<MetaKeys, string> _metaKeys =
+            Enum.GetValues(typeof(MetaKeys)).Cast<MetaKeys>().ToDictionary(a => a, a => a.ToString().ToUpperInvariant());
+
         public EventContinuation Handle(KeyState state)
         {
-            //Console.WriteLine("Alt: {0}\tCtrl: {1}\tShift: {2}\tLetters: {3}",
-            //                  state.MetaKeys.HasFlag(MetaKeys.Alt) ? "1" : "0",
-            //                  state.MetaKeys.HasFlag(MetaKeys.Ctrl) ? "1" : "0",
-            //                  state.MetaKeys.HasFlag(MetaKeys.Shift) ? "1" : "0",
-            //                  string.Join(", ", state.Keys));
+            var builder = new StringBuilder();
+
+            var metaState = from m in _metaKeys
+                            select state.MetaKeys.HasFlag(m.Key) ? m.Value : new string(' ', m.Value.Length);
+            var keys = state.Keys.Select(a => a.ToString().ToUpperInvariant());
+
+            var joined = string.Join("\t", metaState.Concat(keys));
+            Console.WriteLine("KEYSTATE: {0}", joined);
 
             return EventContinuation.Continue;
         }

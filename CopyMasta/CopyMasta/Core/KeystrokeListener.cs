@@ -17,8 +17,10 @@ namespace CopyMasta.Core
 
     public class KeystrokeLitener : KeystrokeListenerBase
     {
-        private readonly KeyState _state;
+        private KeyState _state;
         private readonly List<Func<KeyState, bool>> _listeners = new List<Func<KeyState, bool>>();
+        // This is a HashSet because we want Add() to be idempotent (see note near end of HookCallback())
+        private readonly HashSet<int> _abortedVkCodes = new HashSet<int>();
 
         #region Low-Level Communication
 
@@ -76,12 +78,23 @@ namespace CopyMasta.Core
             {
                 return CallNextHookEx(_hookId, nCode, wParam, lParam);
             }
+            
+            // These are two vars instead of a bool because there may be other states
+            // that come through aside from {keyup, keydown}
+            var isUp = WmKeyups.Contains(wParam);
+            var isDown = WmKeydowns.Contains(wParam);
+            var vkCode = Marshal.ReadInt32(lParam);
+
+            if (isUp && _abortedVkCodes.Contains(vkCode))
+            {
+                _abortedVkCodes.Remove(vkCode);
+                return (IntPtr)1;
+            }
 
             var previousState = _state.Clone();
             MetaKeys? metaChange = null;
             char? charChange = null;
 
-            var vkCode = Marshal.ReadInt32(lParam);
             switch (vkCode)
             {
                 case 0x09:
@@ -118,12 +131,8 @@ namespace CopyMasta.Core
                     {
                         charChange = asString[0];
                     }
-
                     break;
             }
-
-            var isUp = WmKeyups.Contains(wParam);
-            var isDown = WmKeydowns.Contains(wParam);
 
             if (metaChange.HasValue)
             {
@@ -157,13 +166,25 @@ namespace CopyMasta.Core
                 }
             }
 
-            if (shouldContinue)
+            if (!shouldContinue)
             {
-                return CallNextHookEx(_hookId, nCode, wParam, lParam);
-            }
-            return (IntPtr) 1;
-        }
+                // The call has been aborted. We need to rollback the state to what it was before
+                // the keys came slamming down since we're also going to ignore the keyup events
+                // when they occur.
 
+                // Holding down a key results in a flurry of keydown events, so it's quite frequent
+                // that an aborted event will be subsequently re-aborted. Since the data structure is
+                // a HashSet and adding an existing entity is idempotent, we don't have to handle the
+                // edge case manually.
+                _abortedVkCodes.Add(vkCode);
+                _state = previousState;
+                return (IntPtr)1;
+            }
+
+            // Otherwise, let the event propagate onward and upward
+            return CallNextHookEx(_hookId, nCode, wParam, lParam);
+        }
+        
         #endregion
 
         #region Base Class Implementation

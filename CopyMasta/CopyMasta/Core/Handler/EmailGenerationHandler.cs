@@ -14,8 +14,13 @@ namespace CopyMasta.Core.Handler
         private int _position;
         private readonly List<Guid> _guids = new List<Guid>();
 
-        public EventContinuation Handle(KeyState state)
+        public EventContinuation Handle(KeyState state, bool isActiveTransition)
         {
+            if (!isActiveTransition)
+            {
+                return EventContinuation.Continue;
+            }
+
             if (!state.MetaKeys.HasFlag(MetaKeys.Alt)
                 || !state.MetaKeys.HasFlag(MetaKeys.Ctrl))
             {

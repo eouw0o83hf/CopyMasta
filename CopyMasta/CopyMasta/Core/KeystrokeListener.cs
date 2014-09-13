@@ -3,22 +3,20 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CopyMasta.Core
 {
     public abstract class KeystrokeListenerBase : IDisposable
     {
-        public abstract void RegisterListener(Func<KeyState, bool> listener);
+        public abstract void RegisterListener(Func<KeyState, bool, bool> listener);
         public abstract void Dispose();
     }
 
     public class KeystrokeLitener : KeystrokeListenerBase
     {
         private KeyState _state;
-        private readonly List<Func<KeyState, bool>> _listeners = new List<Func<KeyState, bool>>();
+        private readonly List<Func<KeyState, bool, bool>> _listeners = new List<Func<KeyState, bool, bool>>();
         // This is a HashSet because we want Add() to be idempotent (see note near end of HookCallback())
         private readonly HashSet<int> _abortedVkCodes = new HashSet<int>();
 
@@ -162,7 +160,7 @@ namespace CopyMasta.Core
             {
                 foreach (var listener in _listeners)
                 {
-                    shouldContinue &= listener(_state);
+                    shouldContinue &= listener(_state, isDown);
                 }
             }
 
@@ -189,7 +187,7 @@ namespace CopyMasta.Core
 
         #region Base Class Implementation
 
-        public override void RegisterListener(Func<KeyState, bool> listener)
+        public override void RegisterListener(Func<KeyState, bool, bool> listener)
         {
             _listeners.Add(listener);
         }

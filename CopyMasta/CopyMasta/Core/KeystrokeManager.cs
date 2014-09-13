@@ -19,13 +19,13 @@ namespace CopyMasta.Core
             _listener.RegisterListener(StateChanged);
         }
 
-        private bool StateChanged(KeyState state)
+        private bool StateChanged(KeyState state, bool isActiveTransition)
         {
             var continueInternal = true;
             var continueExternal = true;
             foreach (var h in _handlers.OrderBy(a => a.AbsoluteExecutionOrder))
             {
-                var status = h.Handle(state);
+                var status = h.Handle(state, isActiveTransition);
 
                 switch (status)
                 {

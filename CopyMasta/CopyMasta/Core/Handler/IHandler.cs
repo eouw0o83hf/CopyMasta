@@ -15,7 +15,7 @@ namespace CopyMasta.Core.Handler
         /// </summary>
         /// <param name="state">New state</param>
         /// <returns>How to allow the event to return</returns>
-        EventContinuation Handle(KeyState state);
+        EventContinuation Handle(KeyState state, bool isActiveTransition);
     }
 
     public enum EventContinuation

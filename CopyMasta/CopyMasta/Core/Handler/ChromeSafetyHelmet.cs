@@ -10,8 +10,13 @@ namespace CopyMasta.Core.Handler
     {
         public int AbsoluteExecutionOrder { get { return ExecutionOrders.ChromeSafetyHelmet; } }
 
-        public EventContinuation Handle(KeyState state)
+        public EventContinuation Handle(KeyState state, bool isActiveTransition)
         {
+            if (!isActiveTransition)
+            {
+                return EventContinuation.Continue;
+            }
+
             if (state.MetaKeys.HasFlag(MetaKeys.Ctrl)
                 && state.MetaKeys.HasFlag(MetaKeys.Shift)
                 && !state.MetaKeys.HasFlag(MetaKeys.Alt)

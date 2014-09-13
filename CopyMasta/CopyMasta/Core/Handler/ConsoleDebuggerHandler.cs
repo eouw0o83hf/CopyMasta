@@ -14,7 +14,7 @@ namespace CopyMasta.Core.Handler
         private static readonly IDictionary<MetaKeys, string> _metaKeys =
             Enum.GetValues(typeof(MetaKeys)).Cast<MetaKeys>().ToDictionary(a => a, a => a.ToString().ToUpperInvariant());
 
-        public EventContinuation Handle(KeyState state)
+        public EventContinuation Handle(KeyState state, bool isActiveTransition)
         {
             if (Debugger.IsAttached)
             {

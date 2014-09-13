@@ -15,8 +15,13 @@ namespace CopyMasta.Core.Handler
         private readonly ICollection<char> _targets = new[] { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
         private readonly object _locker = new object();
 
-        public EventContinuation Handle(KeyState state)
+        public EventContinuation Handle(KeyState state, bool isActiveTransition)
         {
+            if (!isActiveTransition)
+            {
+                return EventContinuation.Continue;
+            }
+
             if (!Clipboard.ContainsText() 
                 || !state.MetaKeys.HasFlag(MetaKeys.Ctrl) 
                 || !state.MetaKeys.HasFlag(MetaKeys.Alt)

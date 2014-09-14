@@ -5,8 +5,10 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using Castle.Windsor;
 using CopyMasta.Core;
+using Application = System.Windows.Application;
 
 namespace CopyMasta
 {
@@ -41,6 +43,7 @@ namespace CopyMasta
             _container.Release(_mainWindow);
             _container.Release(_manager);
             _container.Release(_listener);
+
             base.OnExit(e);
         }
     }

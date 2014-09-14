@@ -17,8 +17,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using Castle.Windsor;
 using CopyMasta.Core;
 using CopyMasta.Core.Handler;
+using Application = System.Windows.Application;
+using ContextMenu = System.Windows.Controls.ContextMenu;
 
 namespace CopyMasta
 {
@@ -31,23 +34,34 @@ namespace CopyMasta
         {
             InitializeComponent();
 
+            SetupTrayMenu();
+
+            Hide();
+        }
+
+        private void SetupTrayMenu()
+        {
             var stream = Assembly
                 .GetExecutingAssembly()
                 .GetManifestResourceStream("CopyMasta.cm_large.ico");
 
+            var exitMenuItem = new ToolStripMenuItem
+            {
+                Text = "Exit",
+            };
+            exitMenuItem.Click += Exit_Handler;
+
+            var contextMenu = new ContextMenuStrip();
+            contextMenu.Items.Add(exitMenuItem);
+
             var icon = new NotifyIcon
-                {
-                    Icon = new Icon(stream),
-                    Visible = true
-                };
+            {
+                Icon = new Icon(stream),
+                Visible = true,
+                ContextMenuStrip = contextMenu
+            };
 
-            icon.DoubleClick += (a, b) =>
-                {
-                    Show();
-                    WindowState = WindowState.Normal;
-                };
-
-            Hide();
+            icon.DoubleClick += NotifyIcon_DoubleClick;
         }
 
         protected override void OnStateChanged(EventArgs e)
@@ -58,6 +72,17 @@ namespace CopyMasta
             }
 
             base.OnStateChanged(e);
+        }
+
+        private void Exit_Handler(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void NotifyIcon_DoubleClick(object sender, EventArgs e)
+        {
+            Show();
+            WindowState = WindowState.Normal;
         }
     }
 }

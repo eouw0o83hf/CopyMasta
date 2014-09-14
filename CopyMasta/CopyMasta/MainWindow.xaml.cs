@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -41,10 +42,6 @@ namespace CopyMasta
 
         private void SetupTrayMenu()
         {
-            var stream = Assembly
-                .GetExecutingAssembly()
-                .GetManifestResourceStream("CopyMasta.cm_large.ico");
-
             var exitMenuItem = new ToolStripMenuItem
             {
                 Text = "Exit",
@@ -54,14 +51,31 @@ namespace CopyMasta
             var contextMenu = new ContextMenuStrip();
             contextMenu.Items.Add(exitMenuItem);
 
-            var icon = new NotifyIcon
+            var notifyIcon = new NotifyIcon
             {
-                Icon = new Icon(stream),
+                Icon = new Icon(GetIconStream()),
                 Visible = true,
                 ContextMenuStrip = contextMenu
             };
 
-            icon.DoubleClick += NotifyIcon_DoubleClick;
+            notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
+
+            using (var stream = GetIconStream())
+            {
+                var iconImageSource = new BitmapImage();
+                iconImageSource.BeginInit();
+                iconImageSource.StreamSource = stream;
+                iconImageSource.EndInit();
+
+                Icon = iconImageSource;
+            }
+        }
+
+        private static Stream GetIconStream()
+        {
+            return Assembly
+                    .GetExecutingAssembly()
+                    .GetManifestResourceStream("CopyMasta.cm_large.ico");
         }
 
         protected override void OnStateChanged(EventArgs e)

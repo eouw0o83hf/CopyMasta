@@ -37,5 +37,8 @@ namespace CopyMasta.Core.Handler
         public const int EmailGenerator = 1100;
 
         public const int PrettyHandler = 1200;
+
+        public const int NewGuidHandler = 1300;
+
     }
 }

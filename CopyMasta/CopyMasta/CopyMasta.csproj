@@ -73,6 +73,7 @@
     <Compile Include="Core\Handler\BucketHandler.cs" />
     <Compile Include="Core\Handler\ChromeSafetyHelmet.cs" />
     <Compile Include="Core\Handler\ConsoleDebuggerHandler.cs" />
+    <Compile Include="Core\Handler\NewGuidHandler.cs" />
     <Compile Include="Core\Handler\PrettyHandler.cs" />
     <Compile Include="Core\Handler\EmailGenerationHandler.cs" />
     <Compile Include="Core\Handler\IHandler.cs" />

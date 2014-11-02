@@ -40,6 +40,9 @@
     <Reference Include="Castle.Windsor">
       <HintPath>..\packages\Castle.Windsor.3.3.0\lib\net45\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -73,6 +76,8 @@
     <Compile Include="Core\Handler\BucketHandler.cs" />
     <Compile Include="Core\Handler\ChromeSafetyHelmet.cs" />
     <Compile Include="Core\Handler\ConsoleDebuggerHandler.cs" />
+    <Compile Include="Core\Handler\FakeSsnHandler.cs" />
+    <Compile Include="Core\Handler\NewGuidHandler.cs" />
     <Compile Include="Core\Handler\PrettyHandler.cs" />
     <Compile Include="Core\Handler\EmailGenerationHandler.cs" />
     <Compile Include="Core\Handler\IHandler.cs" />

@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace CopyMasta.Core.Handler
 {
-    public class FakeSsnHandler
+    public class FakeSsnHandler : IHandler
     {
         public int AbsoluteExecutionOrder { get { return ExecutionOrders.FakeSsnHandler; } }
         private static readonly Random Random = new Random();

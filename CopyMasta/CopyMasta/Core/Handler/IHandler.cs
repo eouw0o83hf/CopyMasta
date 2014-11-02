@@ -40,5 +40,6 @@ namespace CopyMasta.Core.Handler
 
         public const int NewGuidHandler = 1300;
 
+        public const int FakeSsnHandler = 1400;
     }
 }

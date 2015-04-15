@@ -42,25 +42,30 @@ namespace CopyMasta.Core.Handler
 
         private static string Jsonify(string text)
         {
-            JToken json;
-
             // Json.Net annoyingly doesn't have a TryParse analog, so we're left with
             // no choice but to try/catch
             try
             {
-                json = JToken.Parse(text);
+                var json = JToken.Parse(text);
+                return JsonConvert.SerializeObject(json, Formatting.Indented);
             }
             catch
             {
                 return text;
             }
 
-            return JsonConvert.SerializeObject(json, Formatting.Indented);
         }
 
         private static string Regexify(string text)
         {
-            return Regex.Unescape(text);
+            try
+            {
+                return Regex.Unescape(text);
+            }
+            catch
+            {
+                return text;
+            }
         }
     }
 }
